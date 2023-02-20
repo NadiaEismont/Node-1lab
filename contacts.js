@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+const nanoid = require("nanoid").nanoid;
 model.id = nanoid(); //=> "V1StGXR8_Z5jdHi6B-myT"
 const fs = require("fs").promises;
 const { request } = require("http");
@@ -6,16 +6,16 @@ const path = require("path");
 
 const contactsPath = path.join(__dirname, "db", "contacts.json");
 
-(async function listContacts() {
+async function listContacts() {
   await fs
     .readFile(contactsPath, "utf8")
     .then((data) => {
       return JSON.parse(data);
     })
     .then((result) => console.table(result));
-})();
+}
 
-(async function getContactById(contactId) {
+async function getContactById(contactId) {
   await fs
     .readFile(contactsPath, "utf8")
     .then((data) => {
@@ -25,9 +25,9 @@ const contactsPath = path.join(__dirname, "db", "contacts.json");
       return data.filter((data) => data.id === contactId);
     })
     .then((result) => console.table(result));
-})("6");
+}
 
-(async function removeContact(contactId) {
+async function removeContact(contactId) {
   await fs
     .readFile(contactsPath, "utf8")
     .then((data) => {
@@ -42,7 +42,7 @@ const contactsPath = path.join(__dirname, "db", "contacts.json");
         console.error
       );
     });
-})("6");
+}
 
 async function addContact(name, email, phone) {
   await fs
@@ -62,6 +62,9 @@ async function addContact(name, email, phone) {
     });
 }
 
-// module.exports = {
-//   listContacts,
-// };
+module.exports = {
+  listContacts,
+  getContactById,
+  removeContact,
+  addContact,
+};
