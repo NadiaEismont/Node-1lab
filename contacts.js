@@ -1,3 +1,5 @@
+import { nanoid } from "nanoid";
+model.id = nanoid(); //=> "V1StGXR8_Z5jdHi6B-myT"
 const fs = require("fs").promises;
 const { request } = require("http");
 const path = require("path");
@@ -25,12 +27,39 @@ const contactsPath = path.join(__dirname, "db", "contacts.json");
     .then((result) => console.table(result));
 })("6");
 
-function removeContact(contactId) {
-  // ...твій код
-}
+(async function removeContact(contactId) {
+  await fs
+    .readFile(contactsPath, "utf8")
+    .then((data) => {
+      return JSON.parse(data);
+    })
+    .then((data) => {
+      return data.filter((data) => data.id !== contactId);
+    })
+    .then((result) => JSON.stringify(result))
+    .then((data) => {
+      fs.writeFile(contactsPath, data, { encoding: "utf8", flag: "w" }).catch(
+        console.error
+      );
+    });
+})("6");
 
-function addContact(name, email, phone) {
-  // ...твій код
+async function addContact(name, email, phone) {
+  await fs
+    .readFile(contactsPath, "utf8")
+    .then((data) => {
+      return JSON.parse(data);
+    })
+    .then((data) => {
+      data.push({ id: nanoid(), name, email, phone });
+      return data;
+    })
+    .then((result) => JSON.stringify(result))
+    .then((data) => {
+      fs.writeFile(contactsPath, data, { encoding: "utf8", flag: "w" }).catch(
+        console.error
+      );
+    });
 }
 
 // module.exports = {
