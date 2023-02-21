@@ -1,10 +1,4 @@
 const contacts = require("./contacts");
-// import {
-//   listContacts,
-//   getContactById,
-//   removeContact,
-//   addContact,
-// } from "./contacts";
 
 const argv = require("yargs").argv;
 
@@ -15,15 +9,15 @@ function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "get":
-      getContactById(id);
+      contacts.getContactById(id);
       break;
 
     case "add":
-      addContact(name, email, phone);
+      contacts.addContact(name, email, phone);
       break;
 
     case "remove":
-      removeContact(id);
+      contacts.removeContact(id);
       break;
 
     default:

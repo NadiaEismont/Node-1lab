@@ -1,5 +1,5 @@
 const nanoid = require("nanoid").nanoid;
-model.id = nanoid(); //=> "V1StGXR8_Z5jdHi6B-myT"
+
 const fs = require("fs").promises;
 const { request } = require("http");
 const path = require("path");
