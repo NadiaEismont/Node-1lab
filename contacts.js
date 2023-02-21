@@ -1,7 +1,6 @@
 const nanoid = require("nanoid").nanoid;
 
 const fs = require("fs").promises;
-const { request } = require("http");
 const path = require("path");
 
 const contactsPath = path.join(__dirname, "db", "contacts.json");
