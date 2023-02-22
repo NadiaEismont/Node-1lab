@@ -5,60 +5,47 @@ const path = require("path");
 
 const contactsPath = path.join(__dirname, "db", "contacts.json");
 
+const useContacts = async function () {
+  let data = await fs.readFile(contactsPath, "utf8");
+
+  const result = JSON.parse(data);
+  return result;
+};
+
 async function listContacts() {
-  await fs
-    .readFile(contactsPath, "utf8")
-    .then((data) => {
-      return JSON.parse(data);
-    })
-    .then((result) => console.table(result));
+  const result = await useContacts();
+  console.table(result);
 }
 
 async function getContactById(contactId) {
-  await fs
-    .readFile(contactsPath, "utf8")
-    .then((data) => {
-      return JSON.parse(data);
-    })
-    .then((data) => {
-      return data.filter((data) => data.id === contactId);
-    })
-    .then((result) => console.table(result));
+  const data = await useContacts();
+  const result = data.filter((data) => data.id === contactId);
+  console.table(result);
 }
 
 async function removeContact(contactId) {
-  await fs
-    .readFile(contactsPath, "utf8")
-    .then((data) => {
-      return JSON.parse(data);
-    })
-    .then((data) => {
-      return data.filter((data) => data.id !== contactId);
-    })
-    .then((result) => JSON.stringify(result))
-    .then((data) => {
-      fs.writeFile(contactsPath, data, { encoding: "utf8", flag: "w" }).catch(
-        console.error
-      );
-    });
+  const data = await useContacts();
+  const result = data.filter((data) => data.id !== contactId);
+  const newList = JSON.stringify(result);
+
+  try {
+    await fs.writeFile(contactsPath, newList, { encoding: "utf8", flag: "w" });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 async function addContact(name, email, phone) {
-  await fs
-    .readFile(contactsPath, "utf8")
-    .then((data) => {
-      return JSON.parse(data);
-    })
-    .then((data) => {
-      data.push({ id: nanoid(), name, email, phone });
-      return data;
-    })
-    .then((result) => JSON.stringify(result))
-    .then((data) => {
-      fs.writeFile(contactsPath, data, { encoding: "utf8", flag: "w" }).catch(
-        console.error
-      );
-    });
+  const data = await useContacts();
+  data.push({ id: nanoid(), name, email, phone });
+
+  const newList = JSON.stringify(result);
+
+  try {
+    await fs.writeFile(contactsPath, newList, { encoding: "utf8", flag: "w" });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 module.exports = {
