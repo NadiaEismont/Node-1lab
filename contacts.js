@@ -39,7 +39,7 @@ async function addContact(name, email, phone) {
   const data = await useContacts();
   data.push({ id: nanoid(), name, email, phone });
 
-  const newList = JSON.stringify(result);
+  const newList = JSON.stringify(data);
 
   try {
     await fs.writeFile(contactsPath, newList, { encoding: "utf8", flag: "w" });
