@@ -19,7 +19,7 @@ async function listContacts() {
 
 async function getContactById(contactId) {
   const data = await useContacts();
-  const result = data.filter((data) => data.id === contactId);
+  const result = data.find((data) => data.id === contactId.toString());
   console.table(result);
 }
 
